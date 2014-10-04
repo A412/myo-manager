@@ -42,8 +42,8 @@ end
 
 function cycle_state()
 	state_index=state_index + 1
-	if state_index > #state_list
-			state_index=1
+	if state_index > #state_list then
+		state_index=1
 	end
 	state = state_list[state_index]
 	buzz()
