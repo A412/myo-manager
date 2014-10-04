@@ -20,7 +20,11 @@ function unlock()
 	myo.vibrate("short")
 	extendunlock()
 end
-
+function change_state()
+	if unlocked then
+		return lock()
+	return unlock()
+		
 function lock()
 	unlocked = false
 	myo.vibrate("long")
@@ -30,7 +34,7 @@ function onPoseEdge(pose,edge)
 	extendunlock()
 	if pose == "fist" then
         if edge == "off" then
-            unlock()
+            change_state()
         elseif edge == "on" and not unlocked then
         	myo.vibrate("short")
            	myo.vibrate("short")
