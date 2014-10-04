@@ -15,6 +15,11 @@ function cycle_state()
 	buzz()
 end
 
+function mouse_off()
+	mouse = false
+	myo.mouseControl(mouse)
+	cycle_state()
+
 function left_click()
 	if edge=="on" then
 		myo.mouse("left","down")
@@ -63,7 +68,7 @@ state_index = 1 --state indicates which state the program is in
 function states_init()
 	locked={["fist"]= cycle_state}
 	unlocked={["fist"]= cycle_state, ["waveIn"]= window_lock}
-	mouse={["fist"]= cycle_state,["waveIn"]=left_click,["waveOut"]=right_click,["fingersSpread"]=toggle_mouse}
+	mouse={["fist"]= mouse_off,["waveIn"]=left_click,["waveOut"]=right_click,["fingersSpread"]=toggle_mouse}
 	state_list={locked, unlocked, mouse}
 	state=state_list[state_index]
 end
