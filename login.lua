@@ -7,7 +7,7 @@ end
 function lockwindows()
 	--myo.keyboard("left_win","down")
 	--myo.keyboard("win","down")
-	--myo.keyb oard("l","press")
+	--myo.keyb  oard("l","press")
 	--myo.keyboard("win","up")
 	myo.keyboard("f11", "press")
 	--myo.keyboard("left_win","up")
