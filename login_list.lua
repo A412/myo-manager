@@ -25,7 +25,7 @@ end
 
 function mouse_off()
 	mouse = false
-	myo.mouseControl(mouse)
+	myo.controlMouse(mouse)
 	cycle_state()
 end
 
@@ -47,7 +47,7 @@ end
 
 function toggle_mouse()
 	mouse = not mouse
-	myo.mouseControl(mouse)
+	myo.controlMouse(mouse)
 end
 
 function change_state(pose,edge) -- sets program state based on pose and edge
