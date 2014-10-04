@@ -11,7 +11,7 @@ function close_window()
 end
 
 function change_tab()
-	myo.keyboard("tab","press","ctrl")
+	myo.keyboard("tab","press","control")
 end
 
 function cycle_state()
