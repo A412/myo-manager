@@ -1,5 +1,5 @@
 scriptId = 'com.cmv.login'
-
+mouse = false
 --Backend Functions
 
 function window_lock()
@@ -15,10 +15,31 @@ function cycle_state()
 	buzz()
 end
 
+function left_click()
+	if edge=="on" then
+		myo.mouse("left","down")
+	else
+		myo.mouse("left","up")
+	end
+end
+
+function right_click()
+	if edge=="on" then
+		myo.mouse("right","down")
+	else
+		myo.mouse("right","up")
+	end
+end
+
+function toggle_mouse()
+	mouse = not mouse
+	myo.mouseControl(mouse)
+end
+
 function change_state(pose,edge) -- sets program state based on pose and edge
 	-- returns whether or not the state changed
 	if state[pose] then
-		if edge == "off" then
+		if edge == "on" then
 			state[pose]()
 		end
 	end
@@ -42,7 +63,7 @@ state_index = 1 --state indicates which state the program is in
 function states_init()
 	locked={["fist"]= cycle_state}
 	unlocked={["fist"]= cycle_state, ["waveIn"]= window_lock}
-	mouse={["fist"]= cycle_state}
+	mouse={["fist"]= cycle_state,["waveIn"]=left_click,["waveOut"]=right_click,["fingersSpread"]=toggle_mouse}
 	state_list={locked, unlocked, mouse}
 	state=state_list[state_index]
 end
@@ -52,8 +73,6 @@ states_init()
 function onPoseEdge(pose,edge) --fires on gesture
 	change_state(pose,edge)
 end
-
-function window_
 
 function onForegroundWindowChange(app, title)
     if string.match(title, title) then
