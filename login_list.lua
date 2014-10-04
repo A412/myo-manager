@@ -59,11 +59,11 @@ function mouse_off()
 end
 
 function left_click()
-	if edge=="on" then
+	while edge=="on" do
 		myo.mouse("left","down")
-	else	
-		myo.mouse("left","up")
-	end
+		
+	myo.mouse("left","up")
+	
 end
 
 function right_click()
