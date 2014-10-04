@@ -1,4 +1,4 @@
-scriptId = 'com.cmv.login'
+scriptId = 'com.cmv.loginlist'
 mouse = false
 --Backend Functions
 
