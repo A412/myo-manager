@@ -2,44 +2,6 @@ scriptId = 'com.cmv.login'
 
 --Backend Functions
 
-function keyuse(key,action) --performs action on key
-	myo.keyboard(key,action)
-end
-
-function keyusemod(key,action,mod) --performs action of key with mod
-	myo.keyboard(key,action,mod)
-end
-
-function keypress(key) --performs press on key
-	keyaction(key,"press")
-end
-
-function keypressmod(key,mod) --performs press on key with mod
-	keyaction(key,"press",mod)
-end
-
-function keydown(key) --performs down on key
-	keyaction(key,"down")
-end
-  
-function keydownmod(key,mod) --performs down on key with mod
-	keyaction(key,"down", mod)
-end
-
-function keyup(key) --performs up on key
-	keyaction(key,"up")
-end
-
-function keyupmod(key,mod) --performs up on key
-	keyaction(key,"up", mod)
-end
-
-UNLOCKED_TIMEOUT = 5000 --time in ms before lock
-
-function extendunlock() --resets lock time to UNLOCKED_TIMEOUT
-	unlockedSince = myo.getTimeMilliseconds()
-end
-
 function cycle_state()
 	state_index=state_index + 1
 	if state_index > #state_list then
@@ -60,15 +22,6 @@ function change_state(pose,edge) -- sets program state based on pose and edge
 	end
 end
 
-function mouse(edge,pose) --sets the mouse's pose down or up based on the edge
-	if edge == "on" then
-		myo.mouse(pose,"down")
-	else
-		myo.mouse(pose,"up")
-	end
-end
-
-
 function buzz() --generates vibrations corresponding to state
 	if state_index== 1 then
 		myo.vibrate("long") --one long vibration for state 0
@@ -84,7 +37,6 @@ end
 state_index = 1 --state indicates which state the program is in
 --0:lock, 1:menu, 2:mouse, 3:commands, 4: power, 5: custom binds
 
-
 function states_init()
 	locked={["fist"]= cycle_state}
 	unlocked={["fist"]= cycle_state, ["waveIn"]= window_lock}
@@ -95,14 +47,13 @@ end
 
 states_init()
 
-
 function onPoseEdge(pose,edge) --fires on gesture
 	extendunlock()
 	change_state(pose,edge)
 end
 
 function window_lock()
-	myo.keyboard("f12", "press")
+	myo.keyboard("f11","press")
 end
 
 function onForegroundWindowChange(app, title)
