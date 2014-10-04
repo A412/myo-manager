@@ -61,7 +61,7 @@ end
 function left_click()
 	while edge=="on" do
 		myo.mouse("left","down")
-		
+	end	
 	myo.mouse("left","up")
 	
 end
