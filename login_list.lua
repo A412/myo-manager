@@ -98,38 +98,11 @@ states_init()
 
 function onPoseEdge(pose,edge) --fires on gesture
 	extendunlock()
-	
 	change_state(pose,edge)
-	
 end
-
 
 function window_lock()
 	myo.keyboard("f12", "press")
-end
-
-
-function onPeriodic()
-	alt_tab()
-	if myo.mouseControlEnabled() then --extends time before lock if in mousemode
-		extendunlock()
-	end
-	if unlocked then
-        if myo.getTimeMilliseconds() - unlockedSince > UNLOCKED_TIMEOUT then --locks if more than UNLOCKED_TIMEOUT passes
-            state = 0
-        end
-    end
-end
-
-function alt_tab() --fires if in alt-tab mode
-	if alt_tab then
-		extendunlock()
-		new_yaw = myo.getYaw()
-		if new_yaw - last_yaw >= 0.2 then --number in radians is the angle change in yaw required to tab
-			keypress("tab")
-			last_yaw = new_yaw --updates the yaw value
-		end
-	end
 end
 
 function onForegroundWindowChange(app, title)
