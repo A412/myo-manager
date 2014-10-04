@@ -6,6 +6,14 @@ function window_lock()
 	myo.keyboard("f11","press")
 end
 
+function close_window()
+	myo.keyboard("f4","press","alt")
+end
+
+function change_tab()
+	myo.keyboard("tab","press","ctrl")
+end
+
 function cycle_state()
 	state_index=state_index + 1
 	if state_index > #state_list then
@@ -19,11 +27,12 @@ function mouse_off()
 	mouse = false
 	myo.mouseControl(mouse)
 	cycle_state()
+end
 
 function left_click()
 	if edge=="on" then
 		myo.mouse("left","down")
-	else
+	else	
 		myo.mouse("left","up")
 	end
 end
@@ -67,7 +76,7 @@ state_index = 1 --state indicates which state the program is in
 
 function states_init()
 	locked={["fist"]= cycle_state}
-	unlocked={["fist"]= cycle_state, ["waveIn"]= window_lock}
+	unlocked={["fist"]= cycle_state, ["waveIn"]= window_lock, ["waveOut"] = close_window, ["fingersSpread"] = change_tab}
 	mouse={["fist"]= mouse_off,["waveIn"]=left_click,["waveOut"]=right_click,["fingersSpread"]=toggle_mouse}
 	state_list={locked, unlocked, mouse}
 	state=state_list[state_index]
