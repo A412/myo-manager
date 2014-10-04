@@ -3,43 +3,67 @@ scriptId = 'com.cmv.login'
 -- Backend Functions
 
 function keyuse(key,action)
+	--performs action on key
 	myo.keyboard(key,action)
 
 function keypress(key)
+	--performs press on key
 	keyaction(key,"press")
 end
 
 function keydown(key)
+	--performs down on key
 	keyaction(key,"down")
 end
 
 function keyup(key)
+	--performs up on key
 	keyaction(key,"up")
 end
 
 UNLOCKED_TIMEOUT = 5000
 
 function extendunlock()
+	--resets lock time to UNLOCKED_TIMEOUT
 	unlockedSince = myo.getTimeMilliseconds()
 end
 
-function change_state()
-	if unlocked then
-		return lock()
-	return unlock()
+function change_state(pose,edge)
+	--sets program state based on pose and edge
+	if pose == "fist" then
+		if edge == "off" then
+	        if unlocked then
+	        	return lock()
+	        end
+	    	return unlock()
+	    elseif edge == "on" and not unlocked then
+	       	extendunlock()
+		end
+	end
+end
+
+function mouse(edge,pose)
+	--sets the mouse's pose down or up based on the edge
+	if edge == "on" then
+		myo.mouse(pose,"down")
+	else
+		myo.mouse(pose,"up")
 	end
 end
 
 function unlock()
+	--unlocks the state
 	unlocked = true
 	extendunlock()
 end
 
 function lock()
-	unlocked = false)
+	--locks the state
+	unlocked = false
 end
 
 function buzz(num)
+	--generates vibrations corresponding to state
 	if num == 0 then
 		myo.vibrate("long")
 	else
@@ -55,147 +79,62 @@ state = 0
 
 function onPoseEdge(pose,edge)
 	extendunlock()
+	change_state(pose,edge)
+	buzz(state)
 	if not state == 2 and myo.mouseControlEnabled() then
 		myo.controlMouse(false)
 	end
-	if state == 0 then --locked
-		buzz(state)
-		if pose == "fist" then
-	        if edge == "off" then
-	            change_state()
-	        elseif edge == "on" and not unlocked then
-	           	extendunlock()
-           	end
-        end
-	elseif state == 1 then --main menu
-		buzz(state)
-		if pose == "fist" then
-	        if edge == "off" then
-	            change_state()
-	        elseif edge == "on" and not unlocked then
-	           	extendunlock()
-           	end
-        elseif pose == "fingersSpread" and edge == "off" then
-        	state = 2
+	if not state == 3 and alt_tab = true then
+		alt_tab = false
+		keyup("left_alt")
+	end
+	--state 0 is the locked state: no behavior is executed other than that of change_state
+	if state == 1 then --main menu
+		if edge == "off" then --only toggle on release
+	        if pose == "fingersSpread" then
+	        	state = 2
+        	elseif pose == "waveIn"
+        		state = 3
+    		elseif pose == "waveOut"
+    			state = 4
+			else
+				state = 5
+			end
+		end
 	elseif state == 2 then --mousemode
-		buzz(state)
-		if pose == "fist" then
-	        if edge == "off" then
-	            change_state()
-	        elseif edge == "on" and not unlocked then
-	           	extendunlock()
-           	end
-       	else
-       		if not myo.mouseControlEnabled() then
-				myo.controlMouse(true)
-			if pose == "waveIn" and unlocked then
-				if edge == "on" then
-					myo.mouse("left","down")
-				else
-					myo.mouse("left","up")
-				end
-			elseif pose == "waveOut" and unlocked then
-				if edge == "on" then
-					myo.mouse("right","down")
-				else
-					myo.mouse("right","up")
-				end
-			elseif pose == "fingersSpread" and unlocked then
-				if edge == "on" then
-					myo.mouse("center","down")
-				else
-					myo.mouse("center","up")
-				end
-			end
-		end
-	end
-	elseif state == 3 then --windows commands
-		if myo.mouseControlEnabled() then
-			myo.controlMouse(false)
-		end
-		buzz(state)
-		if pose == "fist" then
-	        if edge == "off" then
-	            change_state()
-	        elseif edge == "on" and not unlocked then
-	           	extendunlock()
-           	end
-        end
-	elseif state == 4 then --power options
-		if myo.mouseControlEnabled() then
-			myo.controlMouse(false)
-		end
-		buzz(state)
-		if pose == "fist" then
-	        if edge == "off" then
-	            change_state()
-	        elseif edge == "on" and not unlocked then
-	           	extendunlock()
-           	end
-        end
-    elseif state == 5 then --custom binds
-    	if myo.mouseControlEnabled() then
-			myo.controlMouse(false)
-		end
-    	buzz(state)
-    	if pose == "fist" then
-	        if edge == "off" then
-	            change_state()
-	        elseif edge == "on" and not unlocked then
-	           	extendunlock()
-           	end
-        end
-	if pose == "fist" then
-        if edge == "off" then
-            change_state()
-        elseif edge == "on" and not unlocked then
-           	extendunlock()
-        end
-    elseif not myo.mouseControlEnabled() then
-		if pose == "thumbToPinky" then
-	        if unlocked and edge == "on" then
-	            keypress("f11")
-	        end
-	    elseif pose == "waveIn" then
-	    	if unlocked then
-	    		if edge == "on" then
-	    			alt_tab = true
-	    			keydown("left_alt")
-	    			last_yaw = myo.getYaw()
-				else
-					alt_tab = false
-					keyup("left_alt")
-				end
-			end
-		elseif pose == "waveOut" and unlocked and edge == "on" then
+       	if not myo.mouseControlEnabled() then --enable mouse iff it is disabled
 			myo.controlMouse(true)
-			myo.vibrate("short")
 		end
-	else
-		if pose == "waveOut" and unlocked and edge == "on" then
-			myo.controlMouse(false)
-			myo.vibrate("short")
-			myo.vibrate("short")
-		elseif pose == "waveIn" and unlocked then
-			if edge = "on" then
-				myo.mouse("left","down")
+		if pose == "waveIn" then
+			mouse(edge,"left")
+		elseif pose == "waveOut" then
+			mouse(edge,"right")
+		elseif pose == "fingersSpread" then
+			mouse(edge,"center")
+		end
+	elseif state == 3 then --windows commands
+		if pose == "fingersSpread" then
+			if edge == "on" then
+				alt_tab = true
+				keydown("left_alt")
+				last_yaw = myo.getYaw()
 			else
-				myo.mouse("left","up")
-			end
-		elseif pose == "thumbToPinky" and unlocked then
-			if edge = "on" then
-				myo.mouse("right","down")
-			else
-				myo.mouse("right","up")
-			end
-		elseif pose == "fingersSpread" and unlocked then
-			if edge = "on" then
-				myo.mouse("center","down")
-			else
-				myo.mouse("center","up")
+				alt_tab = false
+				keyup("left_alt")
 			end
 		end
-	end
+	elseif state == 4 then --power options
+    	if pose == "fingersSpread" then
+    		keypress("f9")
+		elseif pose == "waveIn" then
+    		keypress("f10")
+		elseif pose == "waveOut" then
+    		keypress("f11")
+		elseif pose == "thumbToPinky" then
+    		keypress("f12")
+		end
+    elseif state == 5 then --custom binds
+    end
 end
 
 function onPeriodic()
