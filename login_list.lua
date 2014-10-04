@@ -2,6 +2,11 @@ scriptId = 'com.cmv.loginlist'
 mouse = false
 --Backend Functions
 
+function wait(seconds)
+  local start = os.time()
+  repeat until os.time() > start + seconds
+end
+
 function window_lock()
 	myo.keyboard("f11","press")
 end
@@ -90,10 +95,11 @@ end
 
 function buzz() --generates vibrations corresponding to state
 	if state_index== 1 then
-		myo.vibrate("long") --one long vibration for state 0
+		myo.vibrate("short") --one long vibration for state 0
 	else
 		for _ = 1,state_index,1 do
 			myo.vibrate("short") --n short vibrations for state n>0
+			wait(0.5)
 		end
 	end
 end
