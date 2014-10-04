@@ -34,7 +34,7 @@ function onPoseEdge(pose,edge)
         elseif edge == "on" and not unlocked then
         	myo.vibrate("short")
            	myo.vibrate("short")
-           	extendUnlock()
+           	extendunlock()
         end
     end
 	if pose == "waveIn" or pose == "waveOut" then
