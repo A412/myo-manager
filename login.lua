@@ -33,20 +33,20 @@ end
 function onPoseEdge(pose,edge)
 	extendunlock()
 	if pose == "fist" then
-        if edge == "off" then
-            change_state()
-        elseif edge == "on" and not unlocked then
-        	myo.vibrate("short")
-           	myo.vibrate("short")
-           	extendunlock()
-        end
-    end
+        	if edge == "off" then
+            		change_state()
+        	elseif edge == "on" and not unlocked then
+        		myo.vibrate("short")
+           		myo.vibrate("short")
+           		extendunlock()
+        	end
+    	end
 	if pose == "waveIn" or pose == "waveOut" then
-        local now = myo.getTimeMilliseconds()
-        if unlocked and edge == "on" then
-            lockwindows()
-        end
-    end
+        	local now = myo.getTimeMilliseconds()
+        	if unlocked and edge == "on" then
+            		lockwindows()
+        	end
+    	end
 end
 
 function onForegroundWindowChange(app, title)
