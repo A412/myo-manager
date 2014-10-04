@@ -106,7 +106,7 @@ state_index = 1 --state indicates which state the program is in
 function states_init()
 	locked={["fist"]= cycle_state}
 	unlocked={["fist"]= cycle_state, ["waveIn"]= window_lock, ["waveOut"] = close_window, ["fingersSpread"] = change_tab}
-	mouse={["fist"]= mouse_off,["thumbToPinky"]=left_click,["waveOut"]=right_click,["fingerSpread"]=toggle_mouse}
+	mouse={["fist"]= mouse_off,["thumbToPinky"]=left_click,["waveOut"]=right_click,["fingersSpread"]=toggle_mouse}
 	browser={["fist"]= cycle_state,["waveIn"]= new_tab,["waveOut"]= tab_iterate,["fingersSpread"]=close_tab}
 	state_list={locked, unlocked, mouse, browser}
 	state=state_list[state_index]
