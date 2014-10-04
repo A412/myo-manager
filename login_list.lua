@@ -14,6 +14,35 @@ function change_tab()
 	myo.keyboard("tab","press","control")
 end
 
+function is_chrome(val)
+	if not state_index == 0
+		if not state_index == 3
+			state = 5
+		end
+	end
+	state = state_list[state_index]
+	buzz()
+end
+
+function new_tab()
+	myo.keyboard("t","press","control")
+end
+
+current_tab = 1
+tabs = {[1]="1",[2]="2",[3]="3",[4]="4",[5]="5",[6]="6",[7]="7",[8]="8",[9]="9"}
+
+function tab_iterate()
+	myo.keyboard(tabs[current_tab],"press","control")
+	current_tab = current_tab + 1
+	if current_tab > 9 then
+		current_tab = 1
+	end
+end
+
+function close_tab()
+	myo.keyboard("w","press","control")
+end
+
 function cycle_state()
 	state_index=state_index + 1
 	if state_index > #state_list then
@@ -78,7 +107,8 @@ function states_init()
 	locked={["fist"]= cycle_state}
 	unlocked={["fist"]= cycle_state, ["waveIn"]= window_lock, ["waveOut"] = close_window, ["fingersSpread"] = change_tab}
 	mouse={["fist"]= mouse_off,["waveIn"]=left_click,["waveOut"]=right_click,["fingersSpread"]=toggle_mouse}
-	state_list={locked, unlocked, mouse}
+	browser={["fist"]= cycle_state,["waveIn"]= new_tab,["waveOut"]= tab_iterate,["fingersSpread"]=close_tab}
+	state_list={locked, unlocked, mouse, browser}
 	state=state_list[state_index]
 end
 
@@ -89,7 +119,10 @@ function onPoseEdge(pose,edge) --fires on gesture
 end
 
 function onForegroundWindowChange(app, title)
-    if string.match(title, title) then
-		return true
+	if string.match(title, "Google Chrome") then
+		is_chrome(true)
+	else
+		is_chrome(false)
 	end
+	return true
 end
