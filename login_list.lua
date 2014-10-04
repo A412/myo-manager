@@ -1,12 +1,11 @@
 scriptId = 'com.cmv.login'
 
 --Backend Functions
-function window_unlock()
-	myo.keyboard("enter","press")
-end
+
 function window_lock()
 	myo.keyboard("f11","press")
 end
+
 function cycle_state()
 	state_index=state_index + 1
 	if state_index > #state_list then
@@ -21,8 +20,7 @@ function change_state(pose,edge) -- sets program state based on pose and edge
 	if state[pose] then
 		if edge == "off" then
 			state[pose]()
-	       	
-	    end
+		end
 	end
 end
 
@@ -43,7 +41,7 @@ state_index = 1 --state indicates which state the program is in
 
 function states_init()
 	locked={["fist"]= cycle_state}
-	unlocked={["fist"]= cycle_state, ["waveIn"]= window_lock, ["waveOut"]= window_unlock}
+	unlocked={["fist"]= cycle_state, ["waveIn"]= window_lock}
 	mouse={["fist"]= cycle_state}
 	state_list={locked, unlocked, mouse}
 	state=state_list[state_index]
@@ -52,12 +50,13 @@ end
 states_init()
 
 function onPoseEdge(pose,edge) --fires on gesture
-
 	change_state(pose,edge)
 end
 
-
+function window_
 
 function onForegroundWindowChange(app, title)
-    return true
+    if string.match(title, title) then
+		return true
+	end
 end
