@@ -21,7 +21,7 @@ end
 function keydown(key) --performs down on key
 	keyaction(key,"down")
 end
-
+  
 function keydownmod(key,mod) --performs down on key with mod
 	keyaction(key,"down", mod)
 end
@@ -34,7 +34,7 @@ function keyupmod(key,mod) --performs up on key
 	keyaction(key,"up", mod)
 end
 
-UNLOCKED_TIMEOUT = 5000
+UNLOCKED_TIMEOUT = 5000 --time in ms before lock
 
 function extendunlock() --resets lock time to UNLOCKED_TIMEOUT
 	unlockedSince = myo.getTimeMilliseconds()
@@ -86,7 +86,8 @@ end
 
 -- Interaction
 
-state = 0
+state = 0 --state indicates which state the program is in
+--0:lock, 1:menu, 2:mouse, 3:commands, 4: power, 5: custom binds
 
 function onPoseEdge(pose,edge) --fires on gesture
 	extendunlock()
@@ -113,13 +114,13 @@ function onPoseEdge(pose,edge) --fires on gesture
        	if not myo.mouseControlEnabled() then --enable mouse iff it is disabled
 			myo.controlMouse(true)
 		end
-		if pose == "waveIn" then
+		if pose == "fingersSpread" then
+			mouse(edge,"center") --MMB
+		elseif pose == "waveIn" then
 			mouse(edge,"left") --LMB
 		elseif pose == "waveOut" then
 			mouse(edge,"right") --RMB
-		elseif pose == "fingersSpread" then
-			mouse(edge,"center") --MMB
-		elseif pose == "thumbToPinky" then
+		else
 			myo.centerMousePosition() --mouse to screen center
 		end
 	elseif state == 3 then --windows commands
@@ -138,7 +139,7 @@ function onPoseEdge(pose,edge) --fires on gesture
 				keypress("left_win") --hits windows key
 			elseif pose == "waveIn" then
 				keypressmod(d,"win") --hits windows+d to show desktop
-			elseif pose == "thumbToPinky" then
+			else
 				keypressmod(f4,"alt") --closes window with alt+f4
 			end
 			state = 0
@@ -150,7 +151,7 @@ function onPoseEdge(pose,edge) --fires on gesture
     		keypress("f10") --shutdown
 		elseif pose == "waveOut" then
     		keypress("f11") --restart
-		elseif pose == "thumbToPinky" then
+		else
     		keypress("f12") --lock
 		end
 		state = 0
@@ -161,7 +162,7 @@ function onPoseEdge(pose,edge) --fires on gesture
     		keypress("f14")
 		elseif pose == "waveOut" then
     		keypress("f15")
-		elseif pose == "thumbToPinky" then
+		else
     		keypress("f16")
 		end
 		state = 0
